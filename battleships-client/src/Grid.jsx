@@ -19,10 +19,11 @@ class Grid extends Component {
             var row = [];
             for (var j=0; j < cols; j++) {
                 //var status = this.cellStatus(i,j);  //status={status}
-                row.push(<Cell key={(i/10)+j} x={j} y={i} />);
+                row.push(<Cell key={"col_"+j} x={j} y={i} />);
             }
             grid.push(<tr key={"row_"+i}>{row}</tr>);
         }
+        //console.log(grid);
         return grid;
     }
 
@@ -37,14 +38,9 @@ class Grid extends Component {
 
 class Cell extends Component {
 
-    onMouseOverCell() {
-        var x = this.props.x,
-            y = this.props.y;
-    }
-
     render() {
         return (
-            <td onMouseOver={this.onMouseOverCell}></td>
+            <td></td>
         );
     }
 }

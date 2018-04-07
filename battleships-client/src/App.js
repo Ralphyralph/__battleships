@@ -11,6 +11,7 @@ const socket = io(endpoint);
 class App extends Component {
   constructor() {
     super()
+    
 
     this.state = {
       online: 0,
@@ -23,33 +24,36 @@ class App extends Component {
       console.log("Connected to server\nSocket ID:", socket.id,)
       console.log(socket);
     });
-    socket.on('online', count => {
-      this.setState({online: count});
+    socket.on('online', users => {
+      this.setState({online: users});
     });
   }
 
-  setUserName = () => (event) => {
+  onSubmitUser = () => (event) => {
     var userName = event.target.userName.value.trim();
     if (userName === "") {
-      this.setState({userName:"Poseidon"});
+      userName = "Poseidon";  // Default user name
+      this.setState({userName:userName});
     } else {
       this.setState({userName:userName});
     };
+    socket.emit('newUser', userName);
   }
 
   render() {
     if (this.state.userName === null) {
       return (
-        <form onSubmit={this.setUserName()} className="userName">
+        <form onSubmit={this.onSubmitUser()} className="userName">
           <label>Enter username</label>
           <input type="text" name="userName" />
           <button type="submit">Start</button>
         </form>
       );
     }
+    
 
     return (
-      <div className="App">
+      <div>
         <div>
           <p>Player: {this.state.userName}</p>
           <p>Online: {this.state.online}</p>

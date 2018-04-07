@@ -13,26 +13,41 @@ const io = socketIO(server);
 // Listen to port
 server.listen(port, () => console.log("Listning on port:", port));
 
-
-var count = 0;
-
-// Connect and Disconnect
+// Connection
 io.on('connection', socket => {
     console.log("Client connected! Socket ID:", socket.id);
 
-    count++;
-    io.sockets.emit('online', count);
+    socket.on('newUser', userName => {
+        Users.push({
+            id: socket.id,
+            userName: userName
+        });
+        console.log(Users);
+        io.sockets.emit('online', Users.length);
+    });
 
+    // Disconnect
     socket.on('disconnect', () => {
         console.log("Client disconnected! Socket ID:", socket.id);
+        Users.pop();
+        console.log(Users);
+        socket.broadcast.emit('online', Users.length);
 
-        count--;
-        socket.broadcast.emit('online', count);
     });
 });
 
 
 
+
+var Users = [];
+var Games = [];
+const Cols = 10; // X
+const Rows = 10; // Y
+
+function createGrid() {
+    var grid = Array(rows);
+
+}
 
 
 
