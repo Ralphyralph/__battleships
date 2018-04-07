@@ -22,15 +22,20 @@ io.on('connection', socket => {
             id: socket.id,
             userName: userName
         });
-        console.log(Users);
+        console.log("Adding user", socket.id +" "+ userName);
         io.sockets.emit('online', Users.length);
+
     });
 
     // Disconnect
     socket.on('disconnect', () => {
         console.log("Client disconnected! Socket ID:", socket.id);
-        Users.pop();
-        console.log(Users);
+        for (var i = 0; i < Users.length; i++) {
+            if (Users[i].id === socket.id) {
+                Users.splice(i, 1);
+                console.log("Removing user", Users[i]);
+            }
+        } 
         socket.broadcast.emit('online', Users.length);
 
     });
@@ -43,11 +48,6 @@ var Users = [];
 var Games = [];
 const Cols = 10; // X
 const Rows = 10; // Y
-
-function createGrid() {
-    var grid = Array(rows);
-
-}
 
 
 
