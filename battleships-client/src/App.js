@@ -5,17 +5,17 @@ import Grid from './Grid';
 
 
 const serverConnetion = {ip: '192.168.1.2', port: '4004'};
-const endpoint = 'http://' + serverConnetion.ip + ':' + serverConnetion.port;
+const endpoint = 'http://'+ serverConnetion.ip +':'+ serverConnetion.port;
 const socket = io(endpoint);
 
 class App extends Component {
   constructor() {
     super()
     
-
     this.state = {
       online: 0,
-      userName: null
+      userName: null,
+      inGame: false
     }
   }
 
@@ -40,7 +40,13 @@ class App extends Component {
     socket.emit('newUser', userName);
   }
 
+  onJoinGame = (inGame) => (event) => {
+    this.setState({inGame: true});
+    socket.emit('joinGame');
+  }
+
   render() {
+
     if (this.state.userName === null) {
       return (
         <form onSubmit={this.onSubmitUser()} className="userName">
@@ -48,16 +54,20 @@ class App extends Component {
           <input type="text" name="userName" />
           <button type="submit">Start</button>
         </form>
-      );
+      );     
     }
-    
+
+    if (this.state.inGame === false) {
+      var joinGame = <button onClick={this.onJoinGame(this.state.inGame)}>Join Game</button>
+    }
+
 
     return (
       <div>
         <div>
           <p>Player: {this.state.userName}</p>
           <p>Online: {this.state.online}</p>
-          <button>Join Game</button>
+          <div>{joinGame}</div>
         </div>
         <div>
           <Grid _id="Player" />

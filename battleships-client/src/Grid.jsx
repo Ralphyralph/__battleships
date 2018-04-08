@@ -37,7 +37,6 @@ class Grid extends Component {
 }
 
 class Cell extends Component {
-
     render() {
         return (
             <td></td>
