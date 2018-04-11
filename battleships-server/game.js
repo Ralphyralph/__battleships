@@ -1,24 +1,48 @@
 const uniqid = require('uniqid');
 
-// Global Game variables
-var Users = [];
+
+const Users = [];
+const Games = [];
 var AwaitingGame = [];
-var Games = [];
 const Cols = 10; // X
 const Rows = 10; // Y
 
 
-function newUser(id, userName) {
+exports.newUser = function(id, userName) {
     Users.push({
         id: id,
         user_name: userName
     });
-    console.log("Adding user", id +" "+ userName);
+    console.log("Adding user. id:", id,"name:", userName);
 }
 
-function joinGame(player) {
-    console.log(player, "is joining game...");
+exports.onlineUsers = function() {
+    return Users.length;
+}
+
+exports.joinGame = function(id) {
+    var player = findUser(id);
     AwaitingGame.push(player);
+    console.log(player, "is joining game...");
+}
+
+findUser = function(id) {
+    for (var i = 0; i < Users.length; i++) {
+        if (Users[i].id === id) {
+            return Users[i];
+        }
+    }
+}
+
+exports.isPlayerWaiting = function() {
+    if (AwaitingGame.length === 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+exports.addGame = function() {
     if (AwaitingGame.length === 2) {
         Games.push({
             id: uniqid(),
@@ -26,23 +50,41 @@ function joinGame(player) {
             player_2: AwaitingGame[1],
         });
         AwaitingGame = []; // reset
+        console.log("Game added");
+        console.log(Games);
     }
 }
 
-function opponent(player) {
-    var opponentName;
-    return opponentName;
+exports.findOpponent = function(id) {
+    for (var i = 0; i < Games.length; i++) {
+        if (Games[i].player_1.id === id) {
+            return Games[i].player_2;
+        }
+        if (Games[i].player_2.id === id) {
+            return Games[i].player_1;
+        }
+    }
 }
 
-function removeUser(user) {
+exports.leaveGame = function(player) {
+    console.log(player, "left game.");
+    for (var i = 0; i < Games.length; i++) {
+        if (Games[i].player_1 === player || Games[i].player_2 === player) {
+            console.log("Removing game", Games[i]);
+            Games.splice(i, 1);
+        }
+    }
+}
+
+exports.removeUser = function(player) {
     for (var i = 0; i < Users.length; i++) {
-        if (Users[i].id === user) {
-            console.log("Removing user", Users[i]);
+        if (Users[i].id === player) {
+            console.log("Removing player", Users[i]);
             Users.splice(i, 1);
         }
     }
 }
 
-function leaveGame(player) {
-    console.log(player, "left game.");
-}
+
+
+

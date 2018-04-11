@@ -6,7 +6,6 @@ const cols = 10;
 const rows = 10;
 
 class Grid extends Component {
-
     constructor() {
         super();
 

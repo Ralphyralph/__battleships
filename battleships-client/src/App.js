@@ -12,10 +12,14 @@ class App extends Component {
   constructor() {
     super()
     
+    this.defaultUserName = "Poseidon";
+    this.defaultOpponentName = "War lord";
+
     this.state = {
       online: 0,
       userName: null,
-      inGame: false
+      opponentName: null,
+      inGame: false,
     }
   }
 
@@ -27,12 +31,18 @@ class App extends Component {
     socket.on('online', users => {
       this.setState({online: users});
     });
+    socket.on('opponentName', (opponentName) => {
+      if (opponentName === this.defaultUserName) {
+          opponentName = this.defaultOpponentName;
+      }
+      this.setState({opponentName: opponentName});
+    })
   }
 
   onSubmitUser = () => (event) => {
     var userName = event.target.userName.value.trim();
     if (userName === "") {
-      userName = "Poseidon";  // Default user name
+      userName = this.defaultUserName;
       this.setState({userName:userName});
     } else {
       this.setState({userName:userName});
@@ -40,13 +50,12 @@ class App extends Component {
     socket.emit('newUser', userName);
   }
 
-  onJoinGame = (inGame) => (event) => {
+  onJoinGame = () => (event) => {
     this.setState({inGame: true});
     socket.emit('joinGame');
   }
 
   render() {
-
     if (this.state.userName === null) {
       return (
         <form onSubmit={this.onSubmitUser()} className="userName">
@@ -56,16 +65,22 @@ class App extends Component {
         </form>
       );     
     }
-
     if (this.state.inGame === false) {
       var joinGame = <button onClick={this.onJoinGame(this.state.inGame)}>Join Game</button>
     }
-
+    if (this.state.inGame === true && this.state.opponentName === null) {
+      var waitingForGame = <p>Waiting for another player...</p>
+    }
+    if (this.state.opponentName !== null) {
+      var opponent = <p>Opponent: {this.state.opponentName}</p>
+    }
 
     return (
       <div>
         <div>
           <p>Player: {this.state.userName}</p>
+          <div>{opponent}</div>
+          <div>{waitingForGame}</div>
           <p>Online: {this.state.online}</p>
           <div>{joinGame}</div>
         </div>
