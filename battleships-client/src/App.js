@@ -11,16 +11,16 @@ const socket = io(endpoint);
 class App extends Component {
   constructor() {
     super()
-    
-    this.defaultUserName = "Poseidon";
-    this.defaultOpponentName = "War lord";
 
     this.state = {
       online: 0,
       userName: null,
       opponentName: null,
       inGame: false,
-    }
+      ships: [],
+    }   
+    this.defaultUserName = "Poseidon";
+    this.defaultOpponentName = "War lord";
   }
 
   componentDidMount() {
@@ -31,7 +31,11 @@ class App extends Component {
     socket.on('online', users => {
       this.setState({online: users});
     });
-    socket.on('opponentName', (opponentName) => {
+    socket.on('ships', ships => {
+      this.setState({ships: ships});
+      console.log("Ships:", this.state.ships);
+    });
+    socket.on('opponentName', opponentName => {
       if (opponentName === this.defaultUserName) {
           opponentName = this.defaultOpponentName;
       }
@@ -85,8 +89,8 @@ class App extends Component {
           <div>{joinGame}</div>
         </div>
         <div>
-          <Grid _id="Player" />
-          <Grid _id="Enemy" />
+          <Grid _id="Player" ships={this.state.ships} />
+          <Grid _id="Enemy" ships={[]}/>
         </div>
       </div>
     );

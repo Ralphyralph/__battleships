@@ -6,24 +6,29 @@ const cols = 10;
 const rows = 10;
 
 class Grid extends Component {
-    constructor() {
-        super();
-
-        
-    }
-
     printGrid() {
         var grid = [];
-        for (var i=0; i < rows; i++) {
+        for (var i = 0; i < rows; i++) {
             var row = [];
-            for (var j=0; j < cols; j++) {
-                //var status = this.cellStatus(i,j);  //status={status}
-                row.push(<Cell key={"col_"+j} x={j} y={i} />);
+            for (var j = 0; j < cols; j++) {
+                var status = this.cellStatus(i, j);
+                row.push(<Cell key={"col_"+j} x={j} y={i} status={status} />);
             }
             grid.push(<tr key={"row_"+i}>{row}</tr>);
         }
-        //console.log(grid);
+        console.log(grid);
         return grid;
+    }
+
+    cellStatus(x, y) {
+        for (var i = 0; i < this.props.ships.length; i++) {
+            for (var j = 0; j < this.props.ships[i].length; j++) {
+                if (this.props.ships[i][j].x === x && this.props.ships[i][j].y === y) {
+                    return "ship";
+                }
+            }
+        }
+        return "empty";
     }
 
     render() {
@@ -38,7 +43,7 @@ class Grid extends Component {
 class Cell extends Component {
     render() {
         return (
-            <td></td>
+            <td className={this.props.status}></td>
         );
     }
 }
