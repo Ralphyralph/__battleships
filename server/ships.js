@@ -55,8 +55,7 @@ createShip = function(shipSize, standingOrLaying) {
 
 standingOrLaying = function() {
     var standingOrLaying = _.random(0, 1);
-    //return standingOrLaying;
-    return 1;
+    return standingOrLaying;
 }
 
 
