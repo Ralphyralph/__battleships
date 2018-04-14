@@ -4,6 +4,7 @@ const socketIO = require('socket.io');
 
 const game = require('./game');
 const ships = require('./ships');
+const bomb = require('./bomb');
 
 
 const port = 4004;
@@ -20,7 +21,7 @@ io.on('connection', socket => {
         io.sockets.emit('online', game.onlineUsers());
     });
 
-    socket.emit('ships', ships.generateShips());
+    //socket.emit('ships', ships.generateShips());
 
     socket.on('joinGame', () => {
         game.joinGame(socket.id);
@@ -36,6 +37,10 @@ io.on('connection', socket => {
         }
     });
 
+    socket.on('bomb', (x, y) => {
+        console.log("bomb at:", x, y, socket.id);
+        bomb.bomb(x, y, socket.id);
+    });
 
     socket.on('disconnect', () => {
         console.log("Client disconnected! Socket ID:", socket.id);
