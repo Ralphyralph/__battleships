@@ -8,6 +8,15 @@
   width: 30px;
   height: 30px;
 }
+.enemy td:hover {
+  background-color: #0ccc1c;
+}
+.hit {
+  background-color: rgb(255, 0, 0);
+}
+.miss {
+  background-color: black;
+}
 .ship {
   background-color: #999;
 }

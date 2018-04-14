@@ -12,7 +12,7 @@ class Grid extends Component {
             var row = [];
             for (var j = 0; j < cols; j++) {
                 var status = this.cellStatus(i, j);
-                row.push(<Cell key={"col_"+j} x={j} y={i} status={status} />);
+                row.push(<Cell key={"col_"+j} x={j} y={i} status={status} emitBomb={this.props.emitBomb}/>);
             }
             grid.push(<tr key={"row_"+i}>{row}</tr>);
         }
@@ -21,29 +21,56 @@ class Grid extends Component {
     }
 
     cellStatus(x, y) {
-        for (var i = 0; i < this.props.ships.length; i++) {
-            for (var j = 0; j < this.props.ships[i].length; j++) {
-                if (this.props.ships[i][j].x === x && this.props.ships[i][j].y === y) {
-                    return "ship";
+        if (this.props.id === "player") {
+            for (var i = 0; i < this.props.ships.length; i++) {
+                for (var j = 0; j < this.props.ships[i].length; j++) {
+                    if (this.props.ships[i][j].x === x && this.props.ships[i][j].y === y) {
+                        return "ship";
+                    }
                 }
             }
+            return "empty";
         }
-        return "empty";
     }
 
     render() {
         return (
             <table className="grid">
-            <tbody>{this.printGrid()}</tbody>
+            <tbody className={this.props.id}>{this.printGrid()}</tbody>
             </table>
         );
     }
 }
 
 class Cell extends Component {
+
+    constructor() {
+        super()
+
+        this.state = {
+            bomb: null
+        }
+    }
+
+    onBomb = () => (event) => {
+        
+        this.props.emitBomb(this.props.x, this.props.y);
+
+        // return this.setState({bomb: "miss"});
+
+        // if (this.props.status === "ship") {
+        //     this.setState({bomb: "hit"});
+        // } else {
+        //     this.setState({bomb: "miss"});
+        //     this.props.emitBomb();
+        //     console.log(this.props);
+
+        // }   
+    }
+
     render() {
         return (
-            <td className={this.props.status}></td>
+            <td onClick={this.onBomb()} className={this.props.status +" "+ this.state.bomb}></td>
         );
     }
 }

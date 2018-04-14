@@ -1,5 +1,3 @@
-const uniqid = require('uniqid');
-
 const ships = require('./ships');
 
 
@@ -14,9 +12,10 @@ const Rows = 10; // Y
 exports.newUser = function(id, userName) {
     Users.push({
         id: id,
-        user_name: userName
+        user_name: userName,
+        ships: ships.generateShips()
     });
-    console.log("Adding user. id:", id,"name:", userName);
+    console.log("Adding user. id:", id);
 }
 
 exports.onlineUsers = function() {
@@ -27,14 +26,6 @@ exports.joinGame = function(id) {
     var player = findUser(id);
     AwaitingGame.push(player);
     console.log(player, "is joining game...");
-}
-
-findUser = function(id) {
-    for (var i = 0; i < Users.length; i++) {
-        if (Users[i].id === id) {
-            return Users[i];
-        }
-    }
 }
 
 exports.isPlayerWaiting = function() {
@@ -48,13 +39,20 @@ exports.isPlayerWaiting = function() {
 exports.addGame = function() {
     if (AwaitingGame.length === 2) {
         Games.push({
-            id: uniqid(),
             player_1: AwaitingGame[0],
             player_2: AwaitingGame[1],
         });
         AwaitingGame = []; // reset
         console.log("Game added");
         console.log(Games);
+    }
+}
+
+findUser = function(id) {
+    for (var i = 0; i < Users.length; i++) {
+        if (Users[i].id === id) {
+            return Users[i];
+        }
     }
 }
 

@@ -59,6 +59,11 @@ class App extends Component {
     socket.emit('joinGame');
   }
 
+  emitBomb(x, y) {
+    console.log("bomb", x, y);
+    socket.emit('bomb', x, y);
+  }
+
   render() {
     if (this.state.userName === null) {
       return (
@@ -89,8 +94,8 @@ class App extends Component {
           <div>{joinGame}</div>
         </div>
         <div>
-          <Grid _id="Player" ships={this.state.ships} />
-          <Grid _id="Enemy" ships={[]}/>
+          <Grid id="player" ships={this.state.ships} />
+          <Grid id="enemy" emitBomb={this.emitBomb}/>
         </div>
       </div>
     );
