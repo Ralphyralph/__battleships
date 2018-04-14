@@ -11,12 +11,11 @@ exports.generateShips = function() {
     //     {x: 0, y: 2},
     //     {x: 0, y: 3},
     // ]);
-    var ship = createShip(5, standingOrLaying());
+    var ship = createShip(4, standingOrLaying());
     ships.push(ship);
     //ships.push(ship_4);
     console.log("Ships:", ships);
     return ships;
-
 }
 
 createShip = function(shipSize, standingOrLaying) {
@@ -28,29 +27,14 @@ createShip = function(shipSize, standingOrLaying) {
             x: index_1,
             y: index_2 
         });
-        if (index_2 <= 9 - shipSize) {
-            index_2++;
+
+        if (standingOrLaying === 1) {
+            index_1++;
         } else {
-            index_2--;
-        }
-
-        
-    }
-    console.log("ship befor turn:", ship);
-
-    if (standingOrLaying = 1) {
-        for (var i = 0; i < shipSize; i++) {
-            var tmp_a;
-            var tmp_b;
-            tmp_a = ship[i].x;
-            tmp_b = ship[i].y;
-            ship[i].x = tmp_b;
-            ship[i].y = tmp_a;
-        }
-    } 
-
-    console.log("ship:", ship);
-    return ship;
+            index_2++;
+        }   
+    }  
+    return ship;     
 }
 
 standingOrLaying = function() {

@@ -15,12 +15,12 @@ server.listen(port, () => console.log("Listning on port:", port));
 io.on('connection', socket => {
     console.log("Client connected! Socket ID:", socket.id);
 
-    socket.emit('ships', ships.generateShips());
-
     socket.on('newUser', userName => {
         game.newUser(socket.id, userName);
         io.sockets.emit('online', game.onlineUsers());
     });
+
+    socket.emit('ships', ships.generateShips());
 
     socket.on('joinGame', () => {
         game.joinGame(socket.id);

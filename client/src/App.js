@@ -4,8 +4,8 @@ import './App.css';
 import Grid from './Grid';
 
 
-const serverConnetion = {ip: '192.168.1.2', port: '4004'};
-const endpoint = 'http://'+ serverConnetion.ip +':'+ serverConnetion.port;
+const serverConnection = {ip: 'localhost', port: '4004'};
+const endpoint = 'http://'+ serverConnection.ip +':'+ serverConnection.port;
 const socket = io(endpoint);
 
 class App extends Component {
