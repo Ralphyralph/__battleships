@@ -18,14 +18,13 @@ class App extends Component {
       opponentName: null,
       inGame: false,
       ships: [],
-
-      boms: [],
-      hits: [],
+      currentX: null,
+      currentY: null,
+      bombs: [],
       turn: null
     }
     this.defaultUserName = "Poseidon";
     this.defaultOpponentName = "War lord";
-    this.bombResult= null;
   }
 
   componentDidMount() {
@@ -38,7 +37,6 @@ class App extends Component {
     });
     socket.on('ships', ships => {
       this.setState({ships: ships});
-      console.log("Ships:", this.state.ships);
     });
     socket.on('startGame', (opponentName,startsGame) => {
       if (opponentName === this.defaultUserName) {
@@ -47,11 +45,8 @@ class App extends Component {
       this.setState({opponentName: opponentName, turn: startsGame});
     });
     socket.on('bomb_result', result => {
-      console.log(result);
-      this.bombResult = result;
-  
+      this.state.bombs.push({x: this.state.currentX,y: this.state.currentY,result:result});
     });
-
   }
 
   onSubmitUser = () => (event) => {
@@ -72,7 +67,8 @@ class App extends Component {
 
   emitBomb = (x,y) => {
     if (this.state.turn === false) { return false; }
-    console.log("bomb", x, y);
+    this.state.currentX = x;
+    this.state.currentY = y;
     socket.emit('bomb', x, y);
   }
 
