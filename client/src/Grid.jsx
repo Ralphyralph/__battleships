@@ -38,9 +38,16 @@ class Grid extends Component {
     }
 
     render() {
+
+        if (this.props.id === 'enemy') {
+            var turnClass = (this.props.turn == true ? 'my_turn' : '');
+        } else {
+            var turnClass = '';
+        }
+
         return (
             <table className="grid">
-            <tbody className={this.props.id}>{this.printGrid()}</tbody>
+            <tbody className={this.props.id + ' ' + turnClass}>{this.printGrid()}</tbody>
             </table>
         );
     }
@@ -78,6 +85,7 @@ class Cell extends Component {
     }
 
     render() {
+
         return (
             <td onClick={this.onBomb()} className={this.props.status +" "+ this.state.bomb}></td>
         );

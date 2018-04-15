@@ -1,13 +1,10 @@
 const ships = require('./ships');
 
-
 const Users = [];
 const Games = [];
 var AwaitingGame = [];
 const Cols = 10; // X
 const Rows = 10; // Y
-
-
 
 exports.newUser = function(id, userName) {
     Users.push({
@@ -15,7 +12,6 @@ exports.newUser = function(id, userName) {
         user_name: userName,
         ships: ships.generateShips()
     });
-    console.log("Adding user. id:", id);
 }
 
 exports.onlineUsers = function() {
@@ -41,10 +37,10 @@ exports.addGame = function() {
         Games.push({
             player_1: AwaitingGame[0],
             player_2: AwaitingGame[1],
+            turn: AwaitingGame[1],
+            bombs: []
         });
-        AwaitingGame = []; // reset
-        console.log("Game added");
-        console.log(Games);
+        AwaitingGame = [];
     }
 }
 
@@ -52,6 +48,14 @@ findUser = function(id) {
     for (var i = 0; i < Users.length; i++) {
         if (Users[i].id === id) {
             return Users[i];
+        }
+    }
+}
+
+exports.findGame = function(id) {
+    for (var i = 0; i < Games.length; i++) {
+        if (Games[i].player_1.id === id || Games[i].player_2.id === id) {
+            return Games[i];
         }
     }
 }
@@ -85,7 +89,3 @@ exports.removeUser = function(player) {
         }
     }
 }
-
-
-
-

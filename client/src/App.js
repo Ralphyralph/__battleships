@@ -20,7 +20,8 @@ class App extends Component {
       ships: [],
 
       boms: [],
-      hits: []
+      hits: [],
+      turn: null
     }
     this.defaultUserName = "Poseidon";
     this.defaultOpponentName = "War lord";
@@ -39,11 +40,11 @@ class App extends Component {
       this.setState({ships: ships});
       console.log("Ships:", this.state.ships);
     });
-    socket.on('opponentName', opponentName => {
+    socket.on('startGame', (opponentName,startsGame) => {
       if (opponentName === this.defaultUserName) {
           opponentName = this.defaultOpponentName;
       }
-      this.setState({opponentName: opponentName});
+      this.setState({opponentName: opponentName, turn: startsGame});
     });
     socket.on('bomb_result', result => {
       console.log(result);
@@ -69,9 +70,14 @@ class App extends Component {
     socket.emit('joinGame');
   }
 
-  emitBomb(x, y) {
+  emitBomb = (x,y) => {
+    if (this.state.turn === false) { return false; }
     console.log("bomb", x, y);
     socket.emit('bomb', x, y);
+  }
+
+  myTurn() {
+    return this.state.turn == true ? <div>my turn</div> : <div>waiting for opponent</div>;
   }
 
   render() {
@@ -94,11 +100,10 @@ class App extends Component {
       var opponent = <p>Opponent: {this.state.opponentName}</p>
     }
 
-
-
     return (
       <div>
         <div>
+          {this.myTurn()}
           <p>Player: {this.state.userName}</p>
           <div>{opponent}</div>
           <div>{waitingForGame}</div>
@@ -107,7 +112,7 @@ class App extends Component {
         </div>
         <div>
           <Grid id="player" ships={this.state.ships} />
-          <Grid id="enemy" emitBomb={this.emitBomb} bombResult={this.bombResult}/> 
+          <Grid id="enemy" turn={this.state.turn} emitBomb={this.emitBomb} bombResult={this.bombResult}/> 
         </div>
       </div>
     );

@@ -8,7 +8,7 @@
   width: 30px;
   height: 30px;
 }
-.enemy td:hover {
+.grid .enemy.my_turn td:hover {
   background-color: #0ccc1c;
 }
 .hit {
@@ -20,3 +20,4 @@
 .ship {
   background-color: #999;
 }
+

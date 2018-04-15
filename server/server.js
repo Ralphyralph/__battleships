@@ -6,7 +6,6 @@ const game = require('./game');
 const ships = require('./ships');
 const bomb = require('./bomb');
 
-
 const port = 4004;
 const app = express();
 const server = http.createServer(app);
@@ -25,22 +24,23 @@ io.on('connection', socket => {
 
     socket.on('joinGame', () => {
         game.joinGame(socket.id);
-        game.addGame(); // if 2 opponents join, add a game
+        game.addGame(); // if 2 opponents join, add a game 
 
         if (game.isPlayerWaiting() === false) {
             var opponent = game.findOpponent(socket.id)
             var opponent_2 = game.findOpponent(opponent.id);
-            socket.emit('opponentName', opponent.user_name);
-            socket.to(opponent.id).emit('opponentName', opponent_2.user_name);
+            socket.emit('startGame', opponent.user_name, true);
+            socket.to(opponent.id).emit('startGame', opponent_2.user_name, false);
         } else {
             console.log("Waiting for opponant..");
         }
     });
 
     socket.on('bomb', (x, y) => {
-        console.log("bomb at:", x, y, socket.id);
+        var result = bomb.bomb(x, y, socket.id);
+        bomb.addBombToGame(x, y, socket.id, result);
 
-        socket.emit('bomb_result', bomb.bomb(x, y, socket.id));
+        socket.emit('bomb_result', result);
 
         //bomb.bomb(x, y, socket.id);
     });
