@@ -21,7 +21,7 @@ io.on('connection', socket => {
         io.sockets.emit('online', game.onlineUsers());
     });
 
-    //socket.emit('ships', ships.generateShips());
+    socket.emit('ships', ships.generateShips());
 
     socket.on('joinGame', () => {
         game.joinGame(socket.id);
@@ -39,7 +39,10 @@ io.on('connection', socket => {
 
     socket.on('bomb', (x, y) => {
         console.log("bomb at:", x, y, socket.id);
-        bomb.bomb(x, y, socket.id);
+
+        socket.emit('bomb_result', bomb.bomb(x, y, socket.id));
+
+        //bomb.bomb(x, y, socket.id);
     });
 
     socket.on('disconnect', () => {

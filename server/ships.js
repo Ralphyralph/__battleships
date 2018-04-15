@@ -51,9 +51,6 @@ createShip = function(shipSize, standingOrLaying, ships) {
     var shipReady = false;
 
     while (ii < 2000 && shipReady === false) {
-
-        console.log('run while');
-        
         var should_ship_be_placed = true;
         var ship = [];
 
@@ -66,7 +63,6 @@ createShip = function(shipSize, standingOrLaying, ships) {
         }
 
         for (var i = 0; i < shipSize; i++) {
-
             if (standingOrLaying === 1) {
                 if (isCollision(ships,index_1,index_2)) {
                     console.log('is isCollision');
@@ -80,7 +76,6 @@ createShip = function(shipSize, standingOrLaying, ships) {
                     continue;
                 }
             }
-
             ship.push({
                 x: index_1,
                 y: index_2 
@@ -94,20 +89,15 @@ createShip = function(shipSize, standingOrLaying, ships) {
         }
 
         if (should_ship_be_placed === true) {
-            console.log('ship Ready');
+            console.log(ship);
             shipReady = true;
         }
 
         if (ship.length !== shipSize) {
-            console.log('WTF WTF');
             shipReady = false;
         }
-
         ii++;
     }
-
-
-
     ships.push(ship);   
 }
 

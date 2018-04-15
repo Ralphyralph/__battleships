@@ -18,9 +18,13 @@ class App extends Component {
       opponentName: null,
       inGame: false,
       ships: [],
-    }   
+
+      boms: [],
+      hits: []
+    }
     this.defaultUserName = "Poseidon";
     this.defaultOpponentName = "War lord";
+    this.bombResult= null;
   }
 
   componentDidMount() {
@@ -40,7 +44,13 @@ class App extends Component {
           opponentName = this.defaultOpponentName;
       }
       this.setState({opponentName: opponentName});
-    })
+    });
+    socket.on('bomb_result', result => {
+      console.log(result);
+      this.bombResult = result;
+  
+    });
+
   }
 
   onSubmitUser = () => (event) => {
@@ -84,6 +94,8 @@ class App extends Component {
       var opponent = <p>Opponent: {this.state.opponentName}</p>
     }
 
+
+
     return (
       <div>
         <div>
@@ -95,12 +107,12 @@ class App extends Component {
         </div>
         <div>
           <Grid id="player" ships={this.state.ships} />
-          <Grid id="enemy" emitBomb={this.emitBomb}/>
+          <Grid id="enemy" emitBomb={this.emitBomb} bombResult={this.bombResult}/> 
         </div>
       </div>
     );
 
-  }
+  }//bombResult={}
 }
 
 export default App;

@@ -12,7 +12,11 @@ class Grid extends Component {
             var row = [];
             for (var j = 0; j < cols; j++) {
                 var status = this.cellStatus(i, j);
-                row.push(<Cell key={"col_"+j} x={j} y={i} status={status} emitBomb={this.props.emitBomb}/>);
+                row.push(
+                    <Cell key={"col_"+j} x={j} y={i} 
+                    status={status} emitBomb={this.props.emitBomb} 
+                    bombResult={this.props.bombResult}/>
+                );
             }
             grid.push(<tr key={"row_"+i}>{row}</tr>);
         }
@@ -53,7 +57,12 @@ class Cell extends Component {
     }
 
     onBomb = () => (event) => {
-        
+        // console.log(this.props.bombResult);
+        // this.setState({bomb: this.props.bombResult});
+        // console.log(this.state.bomb);
+
+        this.setState({bomb: "miss"});
+
         this.props.emitBomb(this.props.x, this.props.y);
 
         // return this.setState({bomb: "miss"});
