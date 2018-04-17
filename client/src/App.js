@@ -19,13 +19,16 @@ class App extends Component {
       inGame: false,
       ships: [],
 
-      boms: [],
-      hits: [],
+      bombs: [],
+
+      currentX: null,
+      currentY: null,
+
+
       turn: null
     }
     this.defaultUserName = "Poseidon";
     this.defaultOpponentName = "War lord";
-    this.bombResult= null;
   }
 
   componentDidMount() {
@@ -38,7 +41,6 @@ class App extends Component {
     });
     socket.on('ships', ships => {
       this.setState({ships: ships});
-      console.log("Ships:", this.state.ships);
     });
     socket.on('startGame', (opponentName,startsGame) => {
       if (opponentName === this.defaultUserName) {
@@ -46,12 +48,12 @@ class App extends Component {
       }
       this.setState({opponentName: opponentName, turn: startsGame});
     });
-    socket.on('bomb_result', result => {
-      console.log(result);
-      this.bombResult = result;
-  
+    socket.on('bomb_result', (result) => {
+      console.log("current bomb-result", result);
+      var _bombs = this.state.bombs;
+      _bombs.push({x: this.state.currentX, y: this.state.currentY, result:result});
+      this.setState({bombs:_bombs});
     });
-
   }
 
   onSubmitUser = () => (event) => {
@@ -72,12 +74,13 @@ class App extends Component {
 
   emitBomb = (x,y) => {
     if (this.state.turn === false) { return false; }
-    console.log("bomb", x, y);
+    this.setState({currentX: x});
+    this.setState({currentY: y});
     socket.emit('bomb', x, y);
   }
 
   myTurn() {
-    return this.state.turn == true ? <div>my turn</div> : <div>waiting for opponent</div>;
+    return this.state.turn === true ? <div>my turn</div> : <div>waiting for opponent</div>;
   }
 
   render() {
@@ -112,7 +115,7 @@ class App extends Component {
         </div>
         <div>
           <Grid id="player" ships={this.state.ships} />
-          <Grid id="enemy" turn={this.state.turn} emitBomb={this.emitBomb} bombResult={this.bombResult}/> 
+          <Grid id="enemy" turn={this.state.turn} emitBomb={this.emitBomb} bombs={this.state.bombs} />
         </div>
       </div>
     );

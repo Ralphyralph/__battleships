@@ -40,7 +40,11 @@ io.on('connection', socket => {
         var result = bomb.bomb(x, y, socket.id);
         bomb.addBombToGame(x, y, socket.id, result);
 
+        
+
         socket.emit('bomb_result', result);
+
+        console.log(result);
 
         //bomb.bomb(x, y, socket.id);
     });

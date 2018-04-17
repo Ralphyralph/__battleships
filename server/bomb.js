@@ -6,7 +6,7 @@ exports.bomb = function(x, y, id) {
     var opponent = game.findOpponent(id);
 
     for (var i = 0; i < opponent.ships.length; i++) {
-        for (var j = 0; j < opponent.ships[i].length; j++) {
+        for (var j = 0; j < opponent.ships[j].length; j++) {
             if (opponent.ships[i][j].x === x && opponent.ships[i][j].y === y) {
                 return "hit";
             } else {

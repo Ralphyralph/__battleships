@@ -13,14 +13,13 @@ class Grid extends Component {
             for (var j = 0; j < cols; j++) {
                 var status = this.cellStatus(i, j);
                 row.push(
-                    <Cell key={"col_"+j} x={j} y={i} 
+                    <Cell key={"col_"+j} x={i} y={j} 
                     status={status} emitBomb={this.props.emitBomb} 
-                    bombResult={this.props.bombResult}/>
+                    bombs={this.props.bombs}/>
                 );
             }
             grid.push(<tr key={"row_"+i}>{row}</tr>);
         }
-        console.log(grid);
         return grid;
     }
 
@@ -35,14 +34,33 @@ class Grid extends Component {
             }
             return "empty";
         }
+        if (this.props.id === "enemy") {
+
+            //console.log(this.props.bombs);
+
+
+            for (var i = 0; i < this.props.bombs.length; i++) {
+
+                //##############################################################################YALLA
+                if (this.props.bombs[i].x === x && this.props.bombs[i].y === y) {
+
+                    console.log("Yallaaa:::", this.props.bombs[i].status);
+                    
+                    return "miss";
+                }
+                //##############################################################################YALLA
+            }
+        }
     }
+
+
 
     render() {
 
         if (this.props.id === 'enemy') {
-            var turnClass = (this.props.turn == true ? 'my_turn' : '');
+            var turnClass = (this.props.turn === true ? 'my_turn' : '');
         } else {
-            var turnClass = '';
+            turnClass = '';
         }
 
         return (
@@ -55,20 +73,10 @@ class Grid extends Component {
 
 class Cell extends Component {
 
-    constructor() {
-        super()
-
-        this.state = {
-            bomb: null
-        }
-    }
-
     onBomb = () => (event) => {
         // console.log(this.props.bombResult);
         // this.setState({bomb: this.props.bombResult});
         // console.log(this.state.bomb);
-
-        this.setState({bomb: "miss"});
 
         this.props.emitBomb(this.props.x, this.props.y);
 
@@ -87,7 +95,7 @@ class Cell extends Component {
     render() {
 
         return (
-            <td onClick={this.onBomb()} className={this.props.status +" "+ this.state.bomb}></td>
+            <td onClick={this.onBomb()} className={this.props.status}></td>
         );
     }
 }
