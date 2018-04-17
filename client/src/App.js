@@ -18,13 +18,9 @@ class App extends Component {
       opponentName: null,
       inGame: false,
       ships: [],
-
-      bombs: [],
-
       currentX: null,
       currentY: null,
-
-
+      bombs: [],
       turn: null
     }
     this.defaultUserName = "Poseidon";
@@ -48,11 +44,11 @@ class App extends Component {
       }
       this.setState({opponentName: opponentName, turn: startsGame});
     });
-    socket.on('bomb_result', (result) => {
-      console.log("current bomb-result", result);
-      var _bombs = this.state.bombs;
-      _bombs.push({x: this.state.currentX, y: this.state.currentY, result:result});
-      this.setState({bombs:_bombs});
+
+    socket.on('bomb_result', result => {
+      this.state.bombs.push({
+        x: this.state.currentX,
+        y: this.state.currentY,result:result});
     });
   }
 
