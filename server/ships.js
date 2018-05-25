@@ -6,22 +6,15 @@ const Rows = 10;
 exports.generateShips = function() {
     var ships = [];
     createShip(4, standingOrLaying(), ships);
+    createShip(4, standingOrLaying(), ships);
+    createShip(3, standingOrLaying(), ships);
     createShip(3, standingOrLaying(), ships);
     createShip(2, standingOrLaying(), ships);
+    createShip(2, standingOrLaying(), ships);
+    createShip(1, standingOrLaying(), ships);
     createShip(1, standingOrLaying(), ships);
     return ships;
 }
-
-// above left   ::: ships[i].x == x-1 && ships[i].y == y-1 
-// above        ::: ships[i].x == x && ships[i].y == y-1 
-// above right  ::: ships[i].x == x+1 && ships[i].y == y-1 
-// left         ::: ships[i].x == x-1 && ships[i].y == y 
-// center       ::: ships[i].x == x && ships[i].y == y 
-// right        ::: ships[i].x == x+1 && ships[i].y == y 
-
-// below left   ::: ships[i].x == x-1 && ships[i].y == y+1 
-// below        ::: ships[i].x == x && ships[i].y == y+1 
-// below right  ::: ships[i].x == x+1 && ships[i].y == y+1 
 
 isCollision = function(ships,x,y) {
     var collision = false;
@@ -49,59 +42,49 @@ createShip = function(shipSize, standingOrLaying, ships) {
 
     var ii = 0;
     var shipReady = false;
+    var should_ship_be_placed = true;
+    var ship = [];
 
     while (ii < 2000 && shipReady === false) {
-        var should_ship_be_placed = true;
-        var ship = [];
+        should_ship_be_placed = true;
+        ship = [];
 
         if (standingOrLaying === 1) {
-            var index_1 = _.random(0, (Cols-1)-shipSize);
-            var index_2 = _.random(0, (Rows-1));
+            var x = _.random(0, (Cols-1)-shipSize);
+            var y = _.random(0, (Rows-1));
         } else {
-            var index_1 = _.random(0, (Cols-1));
-            var index_2 = _.random(0, (Rows-1)-shipSize);
+            var x = _.random(0, (Cols-1));
+            var y = _.random(0, (Rows-1)-shipSize);
         }
 
         for (var i = 0; i < shipSize; i++) {
-            if (standingOrLaying === 1) {
-                if (isCollision(ships,index_1,index_2)) {
-                    console.log('is isCollision');
-                    should_ship_be_placed == false;
-                    continue;
-                }
-            } else {
-                if (isCollision(ships,index_2,index_1)) {
-                    console.log('is isCollision');
-                    should_ship_be_placed == false;
-                    continue;
-                }
+            
+            if (isCollision(ships,x,y)) {
+                should_ship_be_placed = false;
             }
+
             ship.push({
-                x: index_1,
-                y: index_2 
+                x: x,
+                y: y 
             });
 
             if (standingOrLaying === 1) {
-                index_1++;
+                x++;
             } else {
-                index_2++;
+                y++;
             }
         }
 
         if (should_ship_be_placed === true) {
-            console.log(ship);
             shipReady = true;
         }
 
-        if (ship.length !== shipSize) {
-            shipReady = false;
-        }
         ii++;
     }
+
     ships.push(ship);   
 }
 
 standingOrLaying = function() {
-    var standingOrLaying = _.random(0, 1);
-    return standingOrLaying;
+    return _.random(0, 1);
 }
