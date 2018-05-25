@@ -5,14 +5,21 @@ const Rows = 10;
 
 exports.generateShips = function() {
     var ships = [];
+
     createShip(4, standingOrLaying(), ships);
-    createShip(4, standingOrLaying(), ships);
+
     createShip(3, standingOrLaying(), ships);
     createShip(3, standingOrLaying(), ships);
+
     createShip(2, standingOrLaying(), ships);
     createShip(2, standingOrLaying(), ships);
+    createShip(2, standingOrLaying(), ships);
+
     createShip(1, standingOrLaying(), ships);
     createShip(1, standingOrLaying(), ships);
+    createShip(1, standingOrLaying(), ships);
+    createShip(1, standingOrLaying(), ships);
+
     return ships;
 }
 
@@ -21,11 +28,12 @@ isCollision = function(ships,x,y) {
     for (var i = 0; i < ships.length; i++) {
         for (var ii = 0; ii < ships[i].length; ii++) {
 
-            if ((ships[i][ii].x == x-1 && ships[i][ii].y == y-1) ||   // above left
+            if ((ships[i][ii].x == x-1 && ships[i][ii].y == y-1) ||         // above left
                 (ships[i][ii].x == x && ships[i][ii].y == y-1) ||     // above
                 (ships[i][ii].x == x+1 && ships[i][ii].y == y-1) ||   // above right
                 (ships[i][ii].x == x-1 && ships[i][ii].y == y) ||     // left 
-                (ships[i][ii].x == x && ships[i][ii].y == y) ||      // center
+                (ships[i][ii].x == x && ships[i][ii].y == y) ||      
+                // center
                 (ships[i][ii].x == x+1 && ships[i][ii].y == y) ||     // right
                 (ships[i][ii].x == x-1 && ships[i][ii].y == y+1) ||   // below left
                 (ships[i][ii].x == x && ships[i][ii].y == y+1) ||     // below

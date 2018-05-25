@@ -48,7 +48,9 @@ class App extends Component {
     socket.on('bomb_result', result => {
       this.state.bombs.push({
         x: this.state.currentX,
-        y: this.state.currentY,result:result});
+        y: this.state.currentY,
+        result:result
+      });
     });
   }
 
@@ -68,6 +70,10 @@ class App extends Component {
     socket.emit('joinGame');
   }
 
+  onNewShips = () => (event) => {
+    socket.emit('newShips');
+  }
+
   emitBomb = (x,y) => {
     if (this.state.turn === false) { return false; }
     this.setState({currentX: x});
@@ -80,6 +86,7 @@ class App extends Component {
   }
 
   render() {
+    // Username form
     if (this.state.userName === null) {
       return (
         <form onSubmit={this.onSubmitUser()} className="userName">
@@ -89,12 +96,19 @@ class App extends Component {
         </form>
       );     
     }
+    // Join Button
     if (this.state.inGame === false) {
       var joinGame = <button onClick={this.onJoinGame(this.state.inGame)}>Join Game</button>
     }
+    // New Ships button
+    if (this.state.inGame === false) {
+      var newShips = <button onClick={this.onNewShips()}>New Ships</button>
+    }
+    // Waiting for another player 2 go oline
     if (this.state.inGame === true && this.state.opponentName === null) {
       var waitingForGame = <p>Waiting for another player...</p>
     }
+    // Opponent player name
     if (this.state.opponentName !== null) {
       var opponent = <p>Opponent: {this.state.opponentName}</p>
     }
@@ -102,12 +116,13 @@ class App extends Component {
     return (
       <div>
         <div>
-          {this.myTurn()}
+          <div>{this.myTurn()}</div>
           <p>Player: {this.state.userName}</p>
           <div>{opponent}</div>
           <div>{waitingForGame}</div>
           <p>Online: {this.state.online}</p>
           <div>{joinGame}</div>
+          <div>{newShips}</div>
         </div>
         <div>
           <Grid id="player" ships={this.state.ships} />

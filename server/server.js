@@ -22,6 +22,10 @@ io.on('connection', socket => {
 
     socket.emit('ships', ships.generateShips());
 
+    socket.on('newShips', () => {
+        socket.emit('ships', ships.generateShips());
+    });
+
     socket.on('joinGame', () => {
         game.joinGame(socket.id);
         game.addGame(); // if 2 opponents join, add a game 
@@ -39,12 +43,9 @@ io.on('connection', socket => {
     socket.on('bomb', (x, y) => {
         var result = bomb.bomb(x, y, socket.id);
         bomb.addBombToGame(x, y, socket.id, result);
-
-        
-
         socket.emit('bomb_result', result);
 
-        console.log(result);
+        console.log("bomb result", result);
 
         //bomb.bomb(x, y, socket.id);
     });

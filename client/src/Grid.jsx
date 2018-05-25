@@ -44,7 +44,7 @@ class Grid extends Component {
                 //##############################################################################YALLA
                 if (this.props.bombs[i].x === x && this.props.bombs[i].y === y) {
 
-                    console.log("Yallaaa:::", this.props.bombs[i].status);
+                    console.log("bomb status:::", this.props.bombs[i].status);
                     
                     return "miss";
                 }
