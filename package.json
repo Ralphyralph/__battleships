@@ -1,0 +1,35 @@
+{
+  "name": "battleships-client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "browser-refresh": "^1.7.2",
+    "express": "^4.16.3",
+    "nodemon": "^1.17.4",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0",
+    "underscore": "^1.9.0",
+    "uniqid": "^4.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ralphyralph/BattleShips.git"
+  },
+  "author": "Ralph & Pär",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ralphyralph/BattleShips/issues"
+  },
+  "homepage": "https://github.com/Ralphyralph/BattleShips#readme"
+}

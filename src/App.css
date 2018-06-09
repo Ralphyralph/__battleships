@@ -1,0 +1,58 @@
+
+body {
+  font-size: 22px
+}
+p {
+  float: left;
+  width: 100%;
+}
+
+button {
+  border:none;
+  background-color: #222222;
+  color: #ffffff;
+  padding: 1em;
+  cursor:pointer;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.grid {
+  float:left;
+  margin: 1em 0 0 1em;
+}
+.grid td {
+  border: 2px solid #aaa;
+  width: 30px;
+  height: 30px;
+  color: transparent;
+}
+.grid .enemy.my_turn td:hover {
+  background-color: #ffb3b3;
+}
+.hit {
+  background-color: #ffb3b3;
+}
+.miss {
+  background-color: #aaa;
+}
+.ship {
+  background-color: #999;
+}
+
+.statusbar {
+  float: left;
+  width: 100%;
+}
+
+.statusbar div {
+  float:left;
+  padding: 0.8em 0.1em 0em 1em;
+}
+
+.statusbar .right {
+  float:right;
+  padding: 0.8em 1em 0em 1em;
+}

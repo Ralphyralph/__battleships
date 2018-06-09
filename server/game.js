@@ -1,16 +1,14 @@
-const ships = require('./ships');
-
 const Users = [];
 const Games = [];
 var AwaitingGame = [];
 const Cols = 10; // X
 const Rows = 10; // Y
 
-exports.newUser = function(id, userName) {
+exports.newUser = function(id, data) {
     Users.push({
         id: id,
-        user_name: userName,
-        ships: ships.generateShips()
+        user_name: data.userName,
+        ships: data.ships
     });
 }
 
@@ -21,27 +19,20 @@ exports.onlineUsers = function() {
 exports.joinGame = function(id) {
     var player = findUser(id);
     AwaitingGame.push(player);
-    console.log(player, "is joining game...");
 }
 
-exports.isPlayerWaiting = function() {
-    if (AwaitingGame.length === 1) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-exports.addGame = function() {
+exports.startGame = function() {
     if (AwaitingGame.length === 2) {
         Games.push({
             player_1: AwaitingGame[0],
             player_2: AwaitingGame[1],
-            turn: AwaitingGame[1],
+            turn: AwaitingGame[1].id,
             bombs: []
         });
         AwaitingGame = [];
+        return true;
     }
+    return false;
 }
 
 findUser = function(id) {
@@ -60,6 +51,14 @@ exports.findGame = function(id) {
     }
 }
 
+exports.changePlayerTurn = function(game) {
+    if (game.turn === game.player_1.id) {
+        game.turn = game.player_2.id;
+    } else {
+        game.turn = game.player_1.id;
+    }
+}
+
 exports.findOpponent = function(id) {
     for (var i = 0; i < Games.length; i++) {
         if (Games[i].player_1.id === id) {
@@ -71,11 +70,20 @@ exports.findOpponent = function(id) {
     }
 }
 
+exports.findPlayer = function(id) {
+    for (var i = 0; i < Games.length; i++) {
+        if (Games[i].player_1.id === id) {
+            return Games[i].player_1;
+        }
+        if (Games[i].player_2.id === id) {
+            return Games[i].player_2;
+        }
+    }
+}
+
 exports.leaveGame = function(player) {
-    console.log(player, "left game.");
     for (var i = 0; i < Games.length; i++) {
         if (Games[i].player_1 === player || Games[i].player_2 === player) {
-            console.log("Removing game", Games[i]);
             Games.splice(i, 1);
         }
     }
@@ -84,7 +92,6 @@ exports.leaveGame = function(player) {
 exports.removeUser = function(player) {
     for (var i = 0; i < Users.length; i++) {
         if (Users[i].id === player) {
-            console.log("Removing player", Users[i]);
             Users.splice(i, 1);
         }
     }
