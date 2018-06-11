@@ -10,12 +10,5 @@ body {
   padding: 0;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 165%;
-  color: #999;
-  background: 
-    linear-gradient(-42deg, rgba(0,0,0,0.3), rgba(0, 40, 105, 0.8)),
-    url('./img/control_room.jpg');
-  background-attachment: fixed;
-  background-size: 100% auto; 
-  background-position: center center;
+  color: #333333;
 }
-

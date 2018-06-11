@@ -1,9 +1,13 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const fs = require('fs');
+const _ = require('underscore');
 
 const game = require('./game');
 const bomb = require('./bomb');
+const config = require('../config/config.json');
+const skins = require('./skins');
 
 const port = 4004;
 const app = express();
@@ -15,7 +19,7 @@ io.on('connection', socket => {
 
     socket.on('newUser', data => {
         game.newUser(socket.id, data);
-        io.sockets.emit('online', game.onlineUsers());
+        io.sockets.emit('online', {config:config, skins:skins.list, usersOnline:game.onlineUsers()});
     });
 
     socket.on('joinGame', () => {
