@@ -42,7 +42,11 @@ io.on('connection', socket => {
         var opponent = game.findOpponent(socket.id);
 
         bomb.addBombToGame(x, y, socket.id, result, this_game);
-        game.changePlayerTurn(this_game);
+
+        if (result === 'miss') {
+            game.changePlayerTurn(this_game);
+        }
+
         socket.emit('bomb_result', {result:result,socketId:socket.id, game:this_game, x:x, y:y});
         socket.to(opponent.id).emit('bomb_result', {result:result,socketId:socket.id, game:this_game, x:x, y:y});
     });

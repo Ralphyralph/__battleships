@@ -9,13 +9,13 @@ exports.bomb = function(x, y, id) {
 
     for (var i = 0; i < opponent.ships.length; i++) {
         for (var j = 0; j < opponent.ships[i].length; j++) {
-            console.log(opponent.ships[i][j].x +'='+ x, opponent.ships[i][j].y +'='+ y);
             if (opponent.ships[i][j].x == x && opponent.ships[i][j].y == y) {
-                console.log('WE ARE HIT');
+                console.log('HIT');
                 return 'hit';
             }
         }
     }
+    console.log('MISS');
     return 'miss';
 }
 

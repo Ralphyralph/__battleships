@@ -62,12 +62,12 @@ class App extends Component {
     });
     this.setState({backgroundLoop:backgroundLoop});
 
-    this.fx_welcome = new Audio('../skins/'+this.state.currentSkin+'/'+'/welcome.ogg');
-    this.fx_start = new Audio('../skins/'+this.state.currentSkin+'/'+'/start.ogg');
-    this.fx_bomb = new Audio('../skins/'+this.state.currentSkin+'/'+'/bomb.ogg');
-    this.fx_hit = new Audio('../skins/'+this.state.currentSkin+'/'+'/hit.ogg');
-    this.fx_miss = new Audio('../skins/'+this.state.currentSkin+'/'+'/miss.ogg');
-    this.fx_win = new Audio('../skins/'+this.state.currentSkin+'/'+'/win.ogg');
+    this.fx_welcome = new Audio('../skins/' + this.state.currentSkin + '/' + '/welcome.ogg');
+    this.fx_start = new Audio('../skins/' + this.state.currentSkin + '/' + '/start.ogg');
+    this.fx_bomb = new Audio('../skins/' + this.state.currentSkin + '/' + '/bomb.ogg');
+    this.fx_hit = new Audio('../skins/' + this.state.currentSkin + '/' + '/hit.ogg');
+    this.fx_miss = new Audio('../skins/' + this.state.currentSkin + '/' + '/miss.ogg');
+    this.fx_win = new Audio('../skins/' + this.state.currentSkin + '/' + '/win.ogg');
 
     this.fx_welcome.volume = 0.1;
     this.fx_start.volume = 0.1;
@@ -81,10 +81,10 @@ class App extends Component {
     var skin = this.currentSkin();
     var style = document.createElement('style');
     style.type = 'text/css';
-    var skinStyle = 'body{color:'+ skin.graphics.color+'}';
-    if(style.styleSheet){
+    var skinStyle = 'body{color:' + skin.graphics.color + '}';
+    if (style.styleSheet) {
         style.styleSheet.cssText = skinStyle;
-    }else{
+    } else {
         style.appendChild(document.createTextNode(skinStyle));
     }
     document.getElementsByTagName('head')[0].appendChild(style);
@@ -151,13 +151,12 @@ class App extends Component {
   bomb = (x,y) => {
     this.fx_bomb.play();
     if (this.state.turn === false) { return false; }
-    this.state.currentX = x;
-    this.state.currentY = y;
+    this.setState({currentX: x, currentY: y});
     socket.emit('bomb', x, y);
   }
 
   whoseTurn() {
-    return this.state.turn == true ? <div>my turn</div> : <div>waiting for opponent</div>;
+    return this.state.turn === true ? <div>my turn</div> : <div>waiting for opponent</div>;
   }
 
   currentSkin() {
@@ -219,14 +218,14 @@ class App extends Component {
     if (_skin) {
       var SkinCssModule = <SkinCss skin={_skin} />
     } else {
-      var SkinCssModule = '';
+      SkinCssModule = '';
     }
 
     if (this.state.backgroundLoopLoaded === true) {
       var text = this.state.backgroundLoopPlaying === true ? 'Pause background loop' : 'Play background loop'; 
       var playBackground = <div onClick={this.startStopBackground} className="playBackground">{text}</div>;
     } else {
-      var playBackground = '';
+      playBackground = '';
     }
 
     return (
