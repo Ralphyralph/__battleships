@@ -36,15 +36,29 @@ io.on('connection', socket => {
         }
     });
 
+    socket.on('chatMessage', (message, userId) => {
+        var opponent = game.findOpponent(socket.id);
+        socket.to(opponent.id).emit('newChatMessage', message);
+    });
+
     socket.on('bomb', (x, y) => {
         var result = bomb.bomb(x, y, socket.id);
         var this_game = game.findGame(socket.id);
         var opponent = game.findOpponent(socket.id);
 
         bomb.addBombToGame(x, y, socket.id, result, this_game);
-        game.changePlayerTurn(this_game);
-        socket.emit('bomb_result', {result:result,socketId:socket.id, game:this_game, x:x, y:y});
-        socket.to(opponent.id).emit('bomb_result', {result:result,socketId:socket.id, game:this_game, x:x, y:y});
+        var doWeHaveAWinner = game.doWeHaveAWinner(opponent,this_game);
+        if (doWeHaveAWinner) {
+            game.endGame(this_game,socket.id);
+            var winner = socket.id;
+        } else {
+            var winner = null;
+        }
+        if (result === 'miss') {
+            game.changePlayerTurn(this_game);
+        }
+        socket.emit('bomb_result', {result:result,socketId:socket.id, game:this_game, x:x, y:y, winner: winner});
+        socket.to(opponent.id).emit('bomb_result', {result:result,socketId:socket.id, game:this_game, x:x, y:y, winner: winner});
     });
 
     socket.on('disconnect', () => {
