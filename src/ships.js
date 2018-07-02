@@ -8,15 +8,15 @@ const isCollision = function(ships,x,y) {
     for (var i = 0; i < ships.length; i++) {
         for (var ii = 0; ii < ships[i].length; ii++) {
 
-            if ((ships[i][ii].x == x-1 && ships[i][ii].y == y-1) ||   // above left
-                (ships[i][ii].x == x && ships[i][ii].y == y-1) ||     // above
-                (ships[i][ii].x == x+1 && ships[i][ii].y == y-1) ||   // above right
-                (ships[i][ii].x == x-1 && ships[i][ii].y == y) ||     // left 
-                (ships[i][ii].x == x && ships[i][ii].y == y) ||      // center
-                (ships[i][ii].x == x+1 && ships[i][ii].y == y) ||     // right
-                (ships[i][ii].x == x-1 && ships[i][ii].y == y+1) ||   // below left
-                (ships[i][ii].x == x && ships[i][ii].y == y+1) ||     // below
-                (ships[i][ii].x == x+1 && ships[i][ii].y == y+1)) {   // below right
+            if ((ships[i][ii].x === x-1 && ships[i][ii].y === y-1) ||   // above left
+                (ships[i][ii].x === x && ships[i][ii].y === y-1) ||     // above
+                (ships[i][ii].x === x+1 && ships[i][ii].y === y-1) ||   // above right
+                (ships[i][ii].x === x-1 && ships[i][ii].y === y) ||     // left 
+                (ships[i][ii].x === x && ships[i][ii].y === y) ||      // center
+                (ships[i][ii].x === x+1 && ships[i][ii].y === y) ||     // right
+                (ships[i][ii].x === x-1 && ships[i][ii].y === y+1) ||   // below left
+                (ships[i][ii].x === x && ships[i][ii].y === y+1) ||     // below
+                (ships[i][ii].x === x+1 && ships[i][ii].y === y+1)) {   // below right
                     collision = true;
                     break;
             }
@@ -40,8 +40,8 @@ const createShip = function(shipSize, standingOrLaying, ships) {
             var x = _.random(0, (Cols-1)-shipSize);
             var y = _.random(0, (Rows-1));
         } else {
-            var x = _.random(0, (Cols-1));
-            var y = _.random(0, (Rows-1)-shipSize);
+            x = _.random(0, (Cols-1));
+            y = _.random(0, (Rows-1)-shipSize);
         }
 
         for (var i = 0; i < shipSize; i++) {

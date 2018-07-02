@@ -47,6 +47,7 @@ io.on('connection', socket => {
         var opponent = game.findOpponent(socket.id);
 
         bomb.addBombToGame(x, y, socket.id, result, this_game);
+
         var doWeHaveAWinner = game.doWeHaveAWinner(opponent,this_game);
         if (doWeHaveAWinner) {
             game.endGame(this_game,socket.id);
